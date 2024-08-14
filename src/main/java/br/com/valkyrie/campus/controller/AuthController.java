@@ -21,11 +21,4 @@ public class AuthController {
     public final ResponseEntity<Users> signupUser(@RequestBody @Valid UsersSignupDto dto) {
         return new ResponseEntity<>(service.createUser(dto), HttpStatus.CREATED);
     }
-
-    //TODO - Mudar para controller próprio de usuário.
-    @GetMapping
-    @RequestMapping("list/{usertag}")
-    public final ResponseEntity<Users> getUser(@PathVariable String usertag) {
-        return new ResponseEntity<>(service.getUser(usertag), HttpStatus.OK);
-    }
 }
