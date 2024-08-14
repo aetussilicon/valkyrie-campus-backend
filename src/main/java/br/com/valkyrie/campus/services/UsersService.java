@@ -1,5 +1,7 @@
 package br.com.valkyrie.campus.services;
 
+import br.com.valkyrie.campus.Exceptions.UserAlreadyExistsException;
+import br.com.valkyrie.campus.Exceptions.UserNotFoundException;
 import br.com.valkyrie.campus.model.dtos.UsersSignupDto;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.UsersMappers;
@@ -17,17 +19,16 @@ public class UsersService {
     private final UsersRepository repo;
     private final UsersMappers mappers;
 
-    //TODO - Criar teste unitário para criação de usuário.
     /** Método para criar um usuário
      *
      * @param dto - Dados do usuário em formato JSON que vem da requisição.
      * @return Retorna o usuário criado.
-     * @throws RuntimeException - Caso o usuário já esteja cadastrado.
+     * @throws UserAlreadyExistsException - Caso o usuário já esteja cadastrado.
      * */
     public Users createUser (UsersSignupDto dto) {
         Optional<Users> checkUserInDatabase = repo.findUserByEmail(dto.getEmail());
         if (checkUserInDatabase.isPresent()) {
-            throw new RuntimeException("Usuário já cadastrado"); //TODO - Criar exceção personalizada
+            throw new UserAlreadyExistsException();
         }
 
         Date actualDate = new Date();
@@ -38,11 +39,17 @@ public class UsersService {
         return repo.save(mappers.signupDtoToModel(dto));
     }
 
+    /** Método para buscar um usuário
+     *
+     * @param usertag - Usertag do usuário que se deseja buscar.
+     * @return Retorna o usuário encontrado.
+     * @throws UserNotFoundException - Caso o usuário não seja encontrado.
+     * */
     public Users getUser(String usertag) {
         return findUserByUsertag(usertag);
     }
 
     private Users findUserByUsertag(String usertag) {
-        return repo.findUserByUsertag(usertag).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return repo.findUserByUsertag(usertag).orElseThrow(UserNotFoundException::new);
     }
 }

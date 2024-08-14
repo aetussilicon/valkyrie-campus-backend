@@ -1,5 +1,6 @@
 package br.com.valkyrie.campus.services;
 
+import br.com.valkyrie.campus.Exceptions.UserAlreadyExistsException;
 import br.com.valkyrie.campus.model.dtos.UsersSignupDto;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.enums.UsersRole;
@@ -93,8 +94,8 @@ class UsersServiceTest {
         when(repo.findUserByEmail(dto.getEmail())).thenReturn(Optional.of(user));
 
         // Verifica se o método createUser lança uma exceção quando o usuário já está cadastrado.
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> service.createUser(dto));
-        assertEquals("Usuário já cadastrado", exception.getMessage());
+        UserAlreadyExistsException exception = assertThrows(UserAlreadyExistsException.class, () -> service.createUser(dto));
+        assertEquals("User already exists", exception.getMessage());
 
         // Verifica se o método findUserByEmail do repositório foi chamado.
         Mockito.verify(repo).findUserByEmail(dto.getEmail());
