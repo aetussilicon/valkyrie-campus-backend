@@ -6,6 +6,7 @@ import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.enums.UsersRole;
 import br.com.valkyrie.campus.model.mappers.UsersMappers;
 import br.com.valkyrie.campus.repositories.UsersRepository;
+import br.com.valkyrie.campus.utils.FindingUsers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,6 +26,9 @@ class UsersServiceTest {
 
     @Mock
     private UsersMappers mapper;
+
+    @Mock
+    private FindingUsers findingUsers;
 
     @InjectMocks
     private UsersService service;
@@ -99,5 +103,24 @@ class UsersServiceTest {
 
         // Verifica se o método findUserByEmail do repositório foi chamado.
         Mockito.verify(repo).findUserByEmail(dto.getEmail());
+    }
+
+    @Test
+    void getUser_userInDatabase() {
+        Users user = new Users();
+        user.setFullName("Teste User");
+        user.setUsertag("testeuser");
+        user.setEmail("teste@teste.com");
+
+        when(findingUsers.findUserbyUsertag(user.getUsertag())).thenReturn(user);
+
+        Users foundUser = service.getUser(user.getUsertag());
+
+        assertNotNull(foundUser);
+        assertEquals(user.getFullName(), foundUser.getFullName());
+        assertEquals(user.getUsertag(), foundUser.getUsertag());
+        assertEquals(user.getEmail(), foundUser.getEmail());
+
+        Mockito.verify(findingUsers).findUserbyUsertag(user.getUsertag());
     }
 }
