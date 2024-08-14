@@ -17,7 +17,7 @@ public class UsersService {
     private final UsersRepository repo;
     private final UsersMappers mappers;
 
-
+    //TODO - Criar teste unitário para criação de usuário.
     /** Método para criar um usuário
      *
      * @param dto - Dados do usuário em formato JSON que vem da requisição.
@@ -36,5 +36,13 @@ public class UsersService {
 
         //TODO - Alterar return para um Resposta Completa com status e mensagem.
         return repo.save(mappers.signupDtoToModel(dto));
+    }
+
+    public Users getUser(String usertag) {
+        return findUserByUsertag(usertag);
+    }
+
+    private Users findUserByUsertag(String usertag) {
+        return repo.findUserByUsertag(usertag).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 }

@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("auth")
@@ -23,5 +20,12 @@ public class UsersController {
     @RequestMapping("signup")
     public final ResponseEntity<Users> signupUser(@RequestBody @Valid UsersSignupDto dto) {
         return new ResponseEntity<>(service.createUser(dto), HttpStatus.CREATED);
+    }
+
+    //TODO - Mudar para controller próprio de usuário.
+    @GetMapping
+    @RequestMapping("list/{usertag}")
+    public final ResponseEntity<Users> getUser(@PathVariable String usertag) {
+        return new ResponseEntity<>(service.getUser(usertag), HttpStatus.OK);
     }
 }
