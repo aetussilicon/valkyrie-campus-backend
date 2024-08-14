@@ -1,5 +1,6 @@
 package br.com.valkyrie.campus.model.dtos;
 
+import br.com.valkyrie.campus.model.enums.UsersRole;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public class UsersSignupDto {
     private String usertag;
     private String email;
     private String password;
-    private String role;
+    private UsersRole role;
     private Date createdDate;
     private Date lastUpdatedDate;
 }
