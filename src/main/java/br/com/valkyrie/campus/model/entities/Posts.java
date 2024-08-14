@@ -25,6 +25,7 @@ public class Posts {
     @ManyToOne
     @JoinColumn(name = "postedBy")
     private Users postedBy;
+    private String usertag;
     //TODO - Adicionar lista das respostas do post
     private long upvote = INITIAL_UPVOTE;
     private long downvote = INITIAL_DOWNVOTE;
