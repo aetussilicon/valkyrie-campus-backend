@@ -6,6 +6,7 @@ import br.com.valkyrie.campus.model.dtos.UsersSignupDto;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.UsersMappers;
 import br.com.valkyrie.campus.repositories.UsersRepository;
+import br.com.valkyrie.campus.utils.FindingUsers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class UsersService {
 
     private final UsersRepository repo;
     private final UsersMappers mappers;
+    private final FindingUsers findingUsers;
 
     /** Método para criar um usuário
      *
@@ -46,10 +48,6 @@ public class UsersService {
      * @throws UserNotFoundException - Caso o usuário não seja encontrado.
      * */
     public Users getUser(String usertag) {
-        return findUserByUsertag(usertag);
-    }
-
-    private Users findUserByUsertag(String usertag) {
-        return repo.findUserByUsertag(usertag).orElseThrow(UserNotFoundException::new);
+        return findingUsers.findUserbyUsertag(usertag);
     }
 }
