@@ -1,5 +1,5 @@
 create table if not exists posts (
-    post_id BIGINT primary key not null unique,
+    post_id BIGINT primary key generated always as identity,
     title VARCHAR(255) not null,
     content TEXT not null,
     posted_by UUID not null,
@@ -8,8 +8,8 @@ create table if not exists posts (
     downvote BIGINT not null,
     created_date TIMESTAMP not null,
     last_updated_date TIMESTAMP not null,
-    isAnswered BOOLEAN not null,
-    isArchived BOOLEAN not null,
+    is_answered BOOLEAN not null,
+    is_archived BOOLEAN not null,
     foreign key (posted_by) references users(user_id),
     foreign key (usertag) references users(usertag)
 );

@@ -29,8 +29,14 @@ public class Posts {
     //TODO - Adicionar lista das respostas do post
     private long upvote = INITIAL_UPVOTE;
     private long downvote = INITIAL_DOWNVOTE;
+
+    @Column(name = "created_date")
     private Date createdDate;
+    @Column(name = "last_updated_date")
     private Date lastUpdatedDate;
+
+    @Column(name = "is_answered")
     private boolean isAnswered = false;
+    @Column(name = "is_archived")
     private boolean isArchived = false;
 }
