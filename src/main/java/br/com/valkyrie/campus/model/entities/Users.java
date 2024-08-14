@@ -1,9 +1,7 @@
-package br.com.valkyrie.campus;
+package br.com.valkyrie.campus.model.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import br.com.valkyrie.campus.model.enums.UsersRole;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -27,6 +25,8 @@ public class Users {
     private String usertag;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private UsersRole role;
 
     @Column(name = "created_date")
