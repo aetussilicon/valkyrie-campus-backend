@@ -1,7 +1,7 @@
 package br.com.valkyrie.campus.services;
 
-import br.com.valkyrie.campus.Exceptions.UserAlreadyExistsException;
-import br.com.valkyrie.campus.Exceptions.UserNotFoundException;
+import br.com.valkyrie.campus.exceptions.UserAlreadyExistsException;
+import br.com.valkyrie.campus.exceptions.UserNotFoundException;
 import br.com.valkyrie.campus.model.dtos.UsersSignupDto;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.UsersMappers;

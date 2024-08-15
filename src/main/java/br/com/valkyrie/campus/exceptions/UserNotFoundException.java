@@ -1,4 +1,4 @@
-package br.com.valkyrie.campus.Exceptions;
+package br.com.valkyrie.campus.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {
