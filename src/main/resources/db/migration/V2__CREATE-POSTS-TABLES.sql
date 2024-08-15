@@ -1,5 +1,5 @@
 create table if not exists posts (
-    post_id BIGINT primary key generated always as identity,
+    post_id UUID primary key unique,
     title VARCHAR(255) not null,
     content TEXT not null,
     posted_by UUID not null,

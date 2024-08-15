@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "answers")
@@ -13,15 +14,14 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "answerId")
 public class Answer {
-
     private static final int INITIAL_UPVOTE = 0;
     private static final int INITIAL_DOWNVOTE = 0;
 
     @Id
-    private String answerId;
+    private UUID answerId;
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private Posts postId;
+    private Posts post;
     @ManyToOne
     @JoinColumn(name = "answer_by")
     private Users answerBy;

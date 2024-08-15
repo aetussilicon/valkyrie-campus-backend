@@ -1,6 +1,6 @@
 create table if not exists answers (
-    answer_id VARCHAR(10) primary key unique not null,
-    post_id BIGINT not null,
+    answer_id UUID primary key unique,
+    post_id UUID not null,
     answer_by UUID not null,
     usertag VARCHAR(15) not null,
     answer_content TEXT not null,

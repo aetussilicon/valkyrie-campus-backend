@@ -6,11 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class NewPostDto {
-    private Long postId;
+    private UUID postId;
     @NotNull private String title;
     @NotNull private String content;
     private Users postedBy;

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "posts")
@@ -18,8 +19,7 @@ public class Posts {
     private static final long INITIAL_DOWNVOTE = 0;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private UUID postId;
     private String title;
     private String content;
     @ManyToOne
