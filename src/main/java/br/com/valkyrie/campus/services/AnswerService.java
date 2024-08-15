@@ -19,14 +19,25 @@ public class AnswerService {
     private final FindingUsers findingUsers;
     private final FindingPosts findingPosts;
 
+    /**
+     * Publicar nova resposta
+     * @param dto Dados da nova resposta
+     * @return Resposta publicada
+     *
+     */
     public Answer publishNewAnswer(NewAnswerDto dto) {
 
+        // Verifica se o post e usuário existem
         dto.setAnswerBy(findingUsers.searchUserById(dto.getAnswerByUserId()));
         dto.setPost(findingPosts.searchPostById(dto.getPostId()));
 
+        // Adiciona datas de criação e atualização no dto
         Date actualDate = new Date();
         dto.setCreatedDate(actualDate);
         dto.setLastUpdatedDate(actualDate);
+
+        // Salva a resposta no banco de dados
         return repo.save(mapper.answerDtoToModel(dto));
     }
+
 }
