@@ -1,21 +1,15 @@
 package br.com.valkyrie.campus.services;
 
-import br.com.valkyrie.campus.model.dtos.NewAnswerDto;
+import br.com.valkyrie.campus.model.dtos.answer.NewAnswerDto;
 import br.com.valkyrie.campus.model.entities.Answer;
-import br.com.valkyrie.campus.model.entities.Posts;
-import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.AnswerMapper;
 import br.com.valkyrie.campus.repositories.AnswerRepository;
-import br.com.valkyrie.campus.repositories.PostsRepository;
-import br.com.valkyrie.campus.repositories.UsersRepository;
 import br.com.valkyrie.campus.utils.FindingPosts;
 import br.com.valkyrie.campus.utils.FindingUsers;
-import br.com.valkyrie.campus.utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

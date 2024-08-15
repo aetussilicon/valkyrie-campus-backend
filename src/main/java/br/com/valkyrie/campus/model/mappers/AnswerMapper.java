@@ -1,6 +1,6 @@
 package br.com.valkyrie.campus.model.mappers;
 
-import br.com.valkyrie.campus.model.dtos.NewAnswerDto;
+import br.com.valkyrie.campus.model.dtos.answer.NewAnswerDto;
 import br.com.valkyrie.campus.model.entities.Answer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

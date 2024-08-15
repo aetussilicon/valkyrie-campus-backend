@@ -2,14 +2,12 @@ package br.com.valkyrie.campus.services;
 
 import br.com.valkyrie.campus.exceptions.PostNotFoundException;
 import br.com.valkyrie.campus.exceptions.UserNotFoundException;
-import br.com.valkyrie.campus.model.dtos.NewAnswerDto;
+import br.com.valkyrie.campus.model.dtos.answer.NewAnswerDto;
 import br.com.valkyrie.campus.model.entities.Answer;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.AnswerMapper;
 import br.com.valkyrie.campus.repositories.AnswerRepository;
-import br.com.valkyrie.campus.repositories.PostsRepository;
-import br.com.valkyrie.campus.repositories.UsersRepository;
 import br.com.valkyrie.campus.utils.FindingPosts;
 import br.com.valkyrie.campus.utils.FindingUsers;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;

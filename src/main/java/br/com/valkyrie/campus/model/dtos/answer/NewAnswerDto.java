@@ -1,4 +1,4 @@
-package br.com.valkyrie.campus.model.dtos;
+package br.com.valkyrie.campus.model.dtos.answer;
 
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;

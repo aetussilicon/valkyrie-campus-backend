@@ -1,6 +1,6 @@
 package br.com.valkyrie.campus.controller;
 
-import br.com.valkyrie.campus.model.dtos.NewAnswerDto;
+import br.com.valkyrie.campus.model.dtos.answer.NewAnswerDto;
 import br.com.valkyrie.campus.model.entities.Answer;
 import br.com.valkyrie.campus.services.AnswerService;
 import jakarta.validation.Valid;
