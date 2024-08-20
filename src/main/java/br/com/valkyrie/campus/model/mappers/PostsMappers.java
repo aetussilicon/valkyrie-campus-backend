@@ -18,5 +18,7 @@ public interface PostsMappers {
     @Mapping(target = "postId", expression = "java(UUID.randomUUID())")
     Posts newPostDtoToModel(NewPostDto dto);
 
+    PostsDto postModelToDto(Posts posts);
+
     List<PostsDto> modelToPostDto(List<Posts> post);
 }
