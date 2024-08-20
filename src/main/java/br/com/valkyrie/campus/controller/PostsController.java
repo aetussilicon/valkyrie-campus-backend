@@ -2,6 +2,7 @@ package br.com.valkyrie.campus.controller;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
 import br.com.valkyrie.campus.model.dtos.PostsDto;
+import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.services.PostsService;
 import jakarta.validation.Valid;
@@ -27,6 +28,12 @@ public class PostsController {
     @CrossOrigin("http://localhost:5173")
     public ResponseEntity<List<PostsDto>> listAllPosts() {
         return new ResponseEntity<>(service.listPosts(), HttpStatus.OK);
+    }
+
+    @PatchMapping("update/upvote-downvote")
+    public ResponseEntity<Posts> updateUpvoteDownvote(@RequestBody @Valid UpvoteDownvoteDto dto) {
+        service.updateUpvoteDownvote(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

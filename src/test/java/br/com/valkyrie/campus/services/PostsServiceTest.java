@@ -5,6 +5,7 @@ import br.com.valkyrie.campus.model.dtos.PostsDto;
 import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;
+import br.com.valkyrie.campus.model.enums.UpvoteDownvote;
 import br.com.valkyrie.campus.model.mappers.PostsMappers;
 import br.com.valkyrie.campus.repositories.PostsRepository;
 import br.com.valkyrie.campus.utils.FindingPosts;
@@ -69,14 +70,14 @@ class PostsServiceTest {
     @Test
     void updateUpvoteDownvote_Upvote() {
         upvoteDownvoteDto.setPostId(UUID.randomUUID());
-        upvoteDownvoteDto.setUpvote(1);
+        upvoteDownvoteDto.setVote(UpvoteDownvote.UPVOTE);
 
         when(findingPosts.searchPostById(any(UUID.class))).thenReturn(post);
         when(postsMappers.updateUpvoteDownvote(any(UpvoteDownvoteDto.class))).thenReturn(post);
 
         postsService.updateUpvoteDownvote(upvoteDownvoteDto);
 
-        assertEquals(2, upvoteDownvoteDto.getUpvote());
+        assertEquals(1, post.getUpvote());
         verify(postsRepository, times(1)).save(any(Posts.class));
     }
 

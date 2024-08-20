@@ -37,15 +37,17 @@ public class PostsService {
     }
 
     public void updateUpvoteDownvote(UpvoteDownvoteDto dto) {
-        findingPosts.searchPostById(dto.getPostId());
-
-        if (dto.getUpvote() > 0) {
-            dto.setUpvote(dto.getUpvote() + 1);
-            repo.save(mapper.updateUpvoteDownvote(dto));
-        } else if (dto.getDownvote() > 0) {
-            dto.setDownvote(dto.getDownvote() + 1);
-            repo.save(mapper.updateUpvoteDownvote(dto));
+        Posts post = findingPosts.searchPostById(dto.getPostId());
+        switch (dto.getVote()) {
+            case UPVOTE:
+                post.setUpvote(post.getUpvote() + 1);
+                break;
+            case DOWNVOTE:
+                post.setDownvote(post.getDownvote() + 1);
+                break;
         }
+
+        repo.save(post);
     }
 
     public PostsDto listPost(UUID postId) {
