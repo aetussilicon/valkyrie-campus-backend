@@ -2,6 +2,7 @@ package br.com.valkyrie.campus.model.mappers;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
 import br.com.valkyrie.campus.model.dtos.PostsDto;
+import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.utils.IdGenerator;
 import org.mapstruct.Mapper;
@@ -17,6 +18,8 @@ public interface PostsMappers {
 
     @Mapping(target = "postId", expression = "java(UUID.randomUUID())")
     Posts newPostDtoToModel(NewPostDto dto);
+
+    Posts updateUpvoteDownvote(UpvoteDownvoteDto dto);
 
     PostsDto postModelToDto(Posts posts);
 

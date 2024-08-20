@@ -2,6 +2,7 @@ package br.com.valkyrie.campus.services;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
 import br.com.valkyrie.campus.model.dtos.PostsDto;
+import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.PostsMappers;
@@ -33,6 +34,18 @@ public class PostsService {
         dto.setLastUpdatedDate(actualDate);
 
         return repo.save(mapper.newPostDtoToModel(dto));
+    }
+
+    public void updateUpvoteDownvote(UpvoteDownvoteDto dto) {
+        findingPosts.searchPostById(dto.getPostId());
+
+        if (dto.getUpvote() > 0) {
+            dto.setUpvote(dto.getUpvote() + 1);
+            repo.save(mapper.updateUpvoteDownvote(dto));
+        } else if (dto.getDownvote() > 0) {
+            dto.setDownvote(dto.getDownvote() + 1);
+            repo.save(mapper.updateUpvoteDownvote(dto));
+        }
     }
 
     public PostsDto listPost(UUID postId) {
