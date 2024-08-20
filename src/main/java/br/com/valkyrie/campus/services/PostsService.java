@@ -1,6 +1,7 @@
 package br.com.valkyrie.campus.services;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
+import br.com.valkyrie.campus.model.dtos.PostsDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.PostsMappers;
@@ -9,7 +10,9 @@ import br.com.valkyrie.campus.utils.FindingUsers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,20 @@ public class PostsService {
         dto.setLastUpdatedDate(actualDate);
 
         return repo.save(mapper.newPostDtoToModel(dto));
+    }
+
+    public List<PostsDto> listPosts() {
+        List<PostsDto> posts = mapper.modelToPostDto(repo.findAll());
+        for (PostsDto post : posts) {
+            post.setFormatedDate(formatDate(post.getCreatedDate()));
+        }
+        return posts;
+    }
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+    private static String formatDate(Date date) {
+        return dateFormat.format(date);
     }
 
 }
