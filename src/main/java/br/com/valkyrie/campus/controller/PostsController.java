@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("posts")
@@ -22,6 +23,11 @@ public class PostsController {
     @PostMapping("publish")
     public ResponseEntity<Posts> publishNewPost(@RequestBody @Valid NewPostDto dto) {
         return new ResponseEntity<>(service.publishNewPost(dto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("list/{postId}")
+    public ResponseEntity<PostsDto> listPost(@PathVariable UUID postId) {
+        return new ResponseEntity<>(service.listPost(postId), HttpStatus.OK);
     }
 
     @GetMapping("list/all")
