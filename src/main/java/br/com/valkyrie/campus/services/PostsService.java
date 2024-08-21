@@ -7,6 +7,7 @@ import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.PostsMappers;
 import br.com.valkyrie.campus.repositories.PostsRepository;
+import br.com.valkyrie.campus.utils.DefaultDateFormatter;
 import br.com.valkyrie.campus.utils.FindingPosts;
 import br.com.valkyrie.campus.utils.FindingUsers;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +21,19 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class PostsService {
+    // Repositórios e mappers
     private final PostsRepository repo;
     private final PostsMappers mapper;
     private final FindingUsers findingUsers;
     private final FindingPosts findingPosts;
+    private final DefaultDateFormatter defaultDateFormatter;
 
+    /**
+     * Publicar um novo post
+     *
+     * @param dto NewPostDto
+     * @return Posts
+     */
     public Posts publishNewPost(NewPostDto dto) {
         Users postedBy = findingUsers.findUserbyUsertag(dto.getUsertag());
         dto.setPostedBy(postedBy);
@@ -36,6 +45,11 @@ public class PostsService {
         return repo.save(mapper.newPostDtoToModel(dto));
     }
 
+    /**
+     * Atualizar o voto de um post
+     *
+     * @param dto UpvoteDownvoteDto
+     */
     public void updateUpvoteDownvote(UpvoteDownvoteDto dto) {
         Posts post = findingPosts.searchPostById(dto.getPostId());
         switch (dto.getVote()) {
@@ -50,25 +64,29 @@ public class PostsService {
         repo.save(post);
     }
 
+    /**
+     * Listar um post
+     *
+     * @param postId UUID
+     * @return PostsDto
+     */
     public PostsDto listPost(UUID postId) {
         PostsDto post = mapper.postModelToDto(findingPosts.searchPostById(postId));
-        post.setFormatedDate(formatDate(post.getCreatedDate()));
+        post.setFormatedDate(defaultDateFormatter.formatDate(post.getCreatedDate()));
 
         return post;
     }
 
+    /**
+     * Listar todos os posts
+     *
+     * @return List<PostsDto>
+     */
     public List<PostsDto> listPosts() {
         List<PostsDto> posts = mapper.modelToPostDto(repo.findAll());
         for (PostsDto post : posts) {
-            post.setFormatedDate(formatDate(post.getCreatedDate()));
+            post.setFormatedDate(defaultDateFormatter.formatDate(post.getCreatedDate()));
         }
         return posts;
     }
-
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-    private static String formatDate(Date date) {
-        return dateFormat.format(date);
-    }
-
 }
