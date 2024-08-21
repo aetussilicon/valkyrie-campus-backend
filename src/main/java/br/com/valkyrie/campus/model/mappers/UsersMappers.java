@@ -1,6 +1,7 @@
 package br.com.valkyrie.campus.model.mappers;
 
 import br.com.valkyrie.campus.model.dtos.UsersSignupDto;
+import br.com.valkyrie.campus.model.dtos.responses.UsersResponseDto;
 import br.com.valkyrie.campus.model.entities.Users;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,4 +16,6 @@ public interface UsersMappers {
 
     @Mapping(target = "userId", expression = "java(UUID.randomUUID())")
     Users signupDtoToModel(UsersSignupDto dto);
+
+    UsersResponseDto modelToResponseDto(Users user);
 }

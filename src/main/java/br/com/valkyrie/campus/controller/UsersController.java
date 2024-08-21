@@ -1,5 +1,6 @@
 package br.com.valkyrie.campus.controller;
 
+import br.com.valkyrie.campus.model.dtos.responses.UsersResponseDto;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.services.UsersService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class UsersController {
 
     @GetMapping
     @RequestMapping("list/{usertag}")
-    public final ResponseEntity<Users> getUser(@PathVariable String usertag) {
+    public final ResponseEntity<UsersResponseDto> getUser(@PathVariable String usertag) {
         return new ResponseEntity<>(service.getUser(usertag), HttpStatus.OK);
     }
 }
