@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
@@ -22,5 +24,10 @@ public class UsersController {
     @RequestMapping("list/{usertag}")
     public final ResponseEntity<UsersResponseDto> getUser(@PathVariable String usertag) {
         return new ResponseEntity<>(service.getUser(usertag), HttpStatus.OK);
+    }
+
+    @GetMapping("list/all")
+    public final ResponseEntity<List<UsersResponseDto>> getAllUsers() {
+        return new ResponseEntity<>(service.getAllUsers(), HttpStatus.OK);
     }
 }

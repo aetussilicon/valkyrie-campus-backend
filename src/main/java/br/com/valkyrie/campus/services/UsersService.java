@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,5 +55,9 @@ public class UsersService {
      * */
     public UsersResponseDto getUser(String usertag) {
         return mappers.modelToResponseDto(findingUsers.findUserbyUsertag(usertag));
+    }
+
+    public List<UsersResponseDto> getAllUsers() {
+        return mappers.modelListToResponseDtoList(repo.findAll());
     }
 }
