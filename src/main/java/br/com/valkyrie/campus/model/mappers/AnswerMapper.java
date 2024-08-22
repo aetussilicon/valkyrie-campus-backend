@@ -1,6 +1,7 @@
 package br.com.valkyrie.campus.model.mappers;
 
 import br.com.valkyrie.campus.model.dtos.answer.NewAnswerDto;
+import br.com.valkyrie.campus.model.dtos.responses.AnswerResponseDto;
 import br.com.valkyrie.campus.model.entities.Answer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,4 +17,7 @@ public interface AnswerMapper {
     @Mapping(target = "accepted", ignore = true)
     @Mapping(target = "answerId", expression = "java(UUID.randomUUID())")
     Answer answerDtoToModel(NewAnswerDto dto);
+
+    // Answer to AnswerDto
+    AnswerResponseDto answerToDto(Answer answer);
 }
