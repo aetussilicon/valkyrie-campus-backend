@@ -1,10 +1,9 @@
 package br.com.valkyrie.campus.model.mappers;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
-import br.com.valkyrie.campus.model.dtos.PostsDto;
+import br.com.valkyrie.campus.model.dtos.PostsResponseDto;
 import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
-import br.com.valkyrie.campus.utils.IdGenerator;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -21,7 +20,8 @@ public interface PostsMappers {
 
     Posts updateUpvoteDownvote(UpvoteDownvoteDto dto);
 
-    PostsDto postModelToDto(Posts posts);
+    @Mapping(target = "postedBy", source = "postedBy.fullName")
+    PostsResponseDto postModelToDto(Posts posts);
 
-    List<PostsDto> modelToPostDto(List<Posts> post);
+    List<PostsResponseDto> modelToPostDto(List<Posts> post);
 }

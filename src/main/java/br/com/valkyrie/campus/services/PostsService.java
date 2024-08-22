@@ -1,19 +1,17 @@
 package br.com.valkyrie.campus.services;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
-import br.com.valkyrie.campus.model.dtos.PostsDto;
+import br.com.valkyrie.campus.model.dtos.PostsResponseDto;
 import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.model.mappers.PostsMappers;
 import br.com.valkyrie.campus.repositories.PostsRepository;
-import br.com.valkyrie.campus.utils.DefaultDateFormatter;
 import br.com.valkyrie.campus.utils.FindingPosts;
 import br.com.valkyrie.campus.utils.FindingUsers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -26,7 +24,6 @@ public class PostsService {
     private final PostsMappers mapper;
     private final FindingUsers findingUsers;
     private final FindingPosts findingPosts;
-    private final DefaultDateFormatter defaultDateFormatter;
 
     /**
      * Publicar um novo post
@@ -70,11 +67,8 @@ public class PostsService {
      * @param postId UUID
      * @return PostsDto
      */
-    public PostsDto listPost(UUID postId) {
-        PostsDto post = mapper.postModelToDto(findingPosts.searchPostById(postId));
-        post.setFormatedDate(defaultDateFormatter.formatDate(post.getCreatedDate()));
-
-        return post;
+    public PostsResponseDto listPost(UUID postId) {
+        return mapper.postModelToDto(findingPosts.searchPostById(postId));
     }
 
     /**
@@ -82,11 +76,7 @@ public class PostsService {
      *
      * @return List<PostsDto>
      */
-    public List<PostsDto> listPosts() {
-        List<PostsDto> posts = mapper.modelToPostDto(repo.findAll());
-        for (PostsDto post : posts) {
-            post.setFormatedDate(defaultDateFormatter.formatDate(post.getCreatedDate()));
-        }
-        return posts;
+    public List<PostsResponseDto> listPosts() {
+        return mapper.modelToPostDto(repo.findAll());
     }
 }

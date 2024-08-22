@@ -1,7 +1,7 @@
 package br.com.valkyrie.campus.services;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
-import br.com.valkyrie.campus.model.dtos.PostsDto;
+import br.com.valkyrie.campus.model.dtos.PostsResponseDto;
 import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;
@@ -10,7 +10,6 @@ import br.com.valkyrie.campus.model.mappers.PostsMappers;
 import br.com.valkyrie.campus.repositories.PostsRepository;
 import br.com.valkyrie.campus.utils.FindingPosts;
 import br.com.valkyrie.campus.utils.FindingUsers;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -85,7 +84,7 @@ class PostsServiceTest {
     void listPost_success() {
 
         // Criando e configurando o PostsDto(Objeto de retorno)
-        PostsDto postsDto = new PostsDto();
+        PostsResponseDto postsDto = new PostsResponseDto();
         postsDto.setTitle("Test Post");
         postsDto.setContent("Test Content");
         postsDto.setCreatedDate(new Date());
@@ -99,7 +98,7 @@ class PostsServiceTest {
         when(findingPosts.searchPostById(any(UUID.class))).thenReturn(post);
         when(postsMappers.postModelToDto(any(Posts.class))).thenReturn(postsDto);
 
-        PostsDto getPost = postsService.listPost(post.getPostId());
+        PostsResponseDto getPost = postsService.listPost(post.getPostId());
         assertEquals("Test Post", getPost.getTitle());
         assertEquals("Test Content", getPost.getContent());
 

@@ -1,7 +1,7 @@
 package br.com.valkyrie.campus.controller;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
-import br.com.valkyrie.campus.model.dtos.PostsDto;
+import br.com.valkyrie.campus.model.dtos.PostsResponseDto;
 import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.services.PostsService;
@@ -26,13 +26,13 @@ public class PostsController {
     }
 
     @GetMapping("list/{postId}")
-    public ResponseEntity<PostsDto> listPost(@PathVariable UUID postId) {
+    public ResponseEntity<PostsResponseDto> listPost(@PathVariable UUID postId) {
         return new ResponseEntity<>(service.listPost(postId), HttpStatus.OK);
     }
 
     @GetMapping("list/all")
     @CrossOrigin("http://localhost:5173")
-    public ResponseEntity<List<PostsDto>> listAllPosts() {
+    public ResponseEntity<List<PostsResponseDto>> listAllPosts() {
         return new ResponseEntity<>(service.listPosts(), HttpStatus.OK);
     }
 
