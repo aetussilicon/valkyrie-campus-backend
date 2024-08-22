@@ -1,7 +1,7 @@
 package br.com.valkyrie.campus.services;
 
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
-import br.com.valkyrie.campus.model.dtos.PostsResponseDto;
+import br.com.valkyrie.campus.model.dtos.responses.PostsResponseDto;
 import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
 import br.com.valkyrie.campus.model.entities.Posts;
 import br.com.valkyrie.campus.model.entities.Users;

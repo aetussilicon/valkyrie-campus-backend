@@ -1,4 +1,4 @@
-package br.com.valkyrie.campus.model.dtos;
+package br.com.valkyrie.campus.model.dtos.responses;
 
 import lombok.Getter;
 import lombok.Setter;
