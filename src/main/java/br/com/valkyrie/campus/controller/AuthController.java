@@ -1,6 +1,7 @@
 package br.com.valkyrie.campus.controller;
 
 import br.com.valkyrie.campus.model.dtos.UsersSignupDto;
+import br.com.valkyrie.campus.model.dtos.responses.UsersResponseDto;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.services.UsersService;
 import jakarta.validation.Valid;
@@ -18,7 +19,7 @@ public class AuthController {
 
     @PostMapping
     @RequestMapping("signup")
-    public final ResponseEntity<Users> signupUser(@RequestBody @Valid UsersSignupDto dto) {
+    public final ResponseEntity<UsersResponseDto> signupUser(@RequestBody @Valid UsersSignupDto dto) {
         return new ResponseEntity<>(service.createUser(dto), HttpStatus.CREATED);
     }
 }
