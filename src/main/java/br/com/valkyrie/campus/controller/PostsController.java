@@ -21,7 +21,7 @@ public class PostsController {
     private final PostsService service;
 
     @PostMapping("publish")
-    public ResponseEntity<Posts> publishNewPost(@RequestBody @Valid NewPostDto dto) {
+    public ResponseEntity<PostsResponseDto> publishNewPost(@RequestBody @Valid NewPostDto dto) {
         return new ResponseEntity<>(service.publishNewPost(dto), HttpStatus.CREATED);
     }
 

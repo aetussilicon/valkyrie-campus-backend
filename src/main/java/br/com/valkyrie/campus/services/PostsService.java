@@ -31,7 +31,7 @@ public class PostsService {
      * @param dto NewPostDto
      * @return Posts
      */
-    public Posts publishNewPost(NewPostDto dto) {
+    public PostsResponseDto publishNewPost(NewPostDto dto) {
         Users postedBy = findingUsers.findUserbyUsertag(dto.getUsertag());
         dto.setPostedBy(postedBy);
 
@@ -39,7 +39,8 @@ public class PostsService {
         dto.setCreatedDate(actualDate);
         dto.setLastUpdatedDate(actualDate);
 
-        return repo.save(mapper.newPostDtoToModel(dto));
+        Posts postToResponse = repo.save(mapper.newPostDtoToModel(dto));
+        return mapper.postModelToDto(postToResponse);
     }
 
     /**

@@ -1,5 +1,6 @@
 package br.com.valkyrie.campus.services;
 
+import br.com.valkyrie.campus.exceptions.UserNotFoundException;
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
 import br.com.valkyrie.campus.model.dtos.responses.PostsResponseDto;
 import br.com.valkyrie.campus.model.dtos.answer.UpvoteDownvoteDto;
@@ -11,12 +12,12 @@ import br.com.valkyrie.campus.repositories.PostsRepository;
 import br.com.valkyrie.campus.utils.FindingPosts;
 import br.com.valkyrie.campus.utils.FindingUsers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,10 +27,10 @@ import static org.mockito.Mockito.*;
 class PostsServiceTest {
 
     @Mock
-    private PostsRepository postsRepository;
+    private PostsRepository repo;
 
     @Mock
-    private PostsMappers postsMappers;
+    private PostsMappers mapper;
 
     @Mock
     private FindingUsers findingUsers;
@@ -38,70 +39,108 @@ class PostsServiceTest {
     private FindingPosts findingPosts;
 
     @InjectMocks
-    private PostsService postsService;
+    private PostsService service;
 
+    // Entidades
+    private Posts createdPost;
+    private Users postAuthor;
+
+    // DTOs
     private NewPostDto newPostDto;
+    private PostsResponseDto responseDto;
     private UpvoteDownvoteDto upvoteDownvoteDto;
-    private Posts post;
-    private Users user;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        postAuthor = new Users();
+        postAuthor.setUserId(UUID.randomUUID());
+        postAuthor.setUsertag("testuser");
+        postAuthor.setFullName("Test User");
+
         newPostDto = new NewPostDto();
-        newPostDto.setUsertag("usertag");
-        newPostDto.setContent("Post content test");
-
-        post = new Posts();
-        post.setPostId(UUID.randomUUID());
-
-        user = new Users();
-        user.setUserId(UUID.randomUUID());
+        newPostDto.setTitle("Test Post Title");
+        newPostDto.setContent("Test Post Content");
+        newPostDto.setPostedBy(postAuthor);
+        newPostDto.setUsertag(postAuthor.getUsertag());
 
         upvoteDownvoteDto = new UpvoteDownvoteDto();
+
+        createdPost = new Posts();
+        createdPost.setTitle(newPostDto.getTitle());
+        createdPost.setContent(newPostDto.getContent());
+        createdPost.setPostedBy(postAuthor);
+        newPostDto.setUsertag(postAuthor.getUsertag());
+
+        responseDto = new PostsResponseDto();
+        responseDto.setTitle(createdPost.getTitle());
+        responseDto.setContent(createdPost.getContent());
+        responseDto.setPostedBy(postAuthor.getFullName());
+        responseDto.setUsertag(createdPost.getUsertag());
     }
 
     @Test
-    void publishNewPost() {
+    @DisplayName("Test Publish New Post: Success")
+    void publishNewPost_Success() {
+        when(findingUsers.findUserbyUsertag(newPostDto.getUsertag())).thenReturn(postAuthor);
+        when(mapper.newPostDtoToModel(newPostDto)).thenReturn(createdPost);
+        when(repo.save(createdPost)).thenReturn(createdPost);
+        when(mapper.postModelToDto(createdPost)).thenReturn(responseDto);
+
+        PostsResponseDto returnedPost = service.publishNewPost(newPostDto);
+
+        assertNotNull(returnedPost);
+        assertEquals(responseDto.getTitle(), returnedPost.getTitle());
+        assertEquals(responseDto.getContent(), returnedPost.getContent());
+        assertEquals(responseDto.getPostedBy(), returnedPost.getPostedBy());
+        assertEquals(responseDto.getUsertag(), returnedPost.getUsertag());
+
+        verify(findingUsers).findUserbyUsertag(newPostDto.getUsertag());
+        verify(mapper).newPostDtoToModel(newPostDto);
+        verify(repo).save(createdPost);
+        verify(mapper).postModelToDto(createdPost);
+
     }
 
     @Test
+    @DisplayName("Publish New Post: Author Not Found")
+    void publishNewPost_PostAuthorNotFound() {
+        when(findingUsers.findUserbyUsertag(newPostDto.getUsertag())).thenThrow(new UserNotFoundException());
+
+        assertThrows(UserNotFoundException.class, () -> service.publishNewPost(newPostDto));
+
+        verify(findingUsers).findUserbyUsertag(newPostDto.getUsertag());
+        verify(mapper, never()).newPostDtoToModel(any(NewPostDto.class));
+        verify(repo, never()).save(any(Posts.class));
+    }
+
+    @Test
+    @DisplayName("Update Upvote")
     void updateUpvoteDownvote_Upvote() {
         upvoteDownvoteDto.setPostId(UUID.randomUUID());
         upvoteDownvoteDto.setVote(UpvoteDownvote.UPVOTE);
+        when(findingPosts.searchPostById(upvoteDownvoteDto.getPostId())).thenReturn(createdPost);
 
-        when(findingPosts.searchPostById(any(UUID.class))).thenReturn(post);
-        when(postsMappers.updateUpvoteDownvote(any(UpvoteDownvoteDto.class))).thenReturn(post);
+        service.updateUpvoteDownvote(upvoteDownvoteDto);
 
-        postsService.updateUpvoteDownvote(upvoteDownvoteDto);
+        assertEquals(1, createdPost.getUpvote());
 
-        assertEquals(1, post.getUpvote());
-        verify(postsRepository, times(1)).save(any(Posts.class));
+        verify(repo).save(createdPost);
     }
 
     @Test
-    void listPost_success() {
+    @DisplayName("Update Downvote")
+    void updateUpvoteDownvote_Downvote() {
+        upvoteDownvoteDto.setPostId(UUID.randomUUID());
+        upvoteDownvoteDto.setVote(UpvoteDownvote.DOWNVOTE);
 
-        // Criando e configurando o PostsDto(Objeto de retorno)
-        PostsResponseDto postsDto = new PostsResponseDto();
-        postsDto.setTitle("Test Post");
-        postsDto.setContent("Test Content");
-        postsDto.setCreatedDate(new Date());
+        when(findingPosts.searchPostById(upvoteDownvoteDto.getPostId())).thenReturn(createdPost);
 
-        // Configurando o post
-        post.setTitle("Test Post");
-        post.setContent("Test Content");
-        post.setCreatedDate(new Date());
+        service.updateUpvoteDownvote(upvoteDownvoteDto);
 
-        // Configurando comportamento dos mocks
-        when(findingPosts.searchPostById(any(UUID.class))).thenReturn(post);
-        when(postsMappers.postModelToDto(any(Posts.class))).thenReturn(postsDto);
+        assertEquals(1, createdPost.getDownvote());
 
-        PostsResponseDto getPost = postsService.listPost(post.getPostId());
-        assertEquals("Test Post", getPost.getTitle());
-        assertEquals("Test Content", getPost.getContent());
-
-        verify(findingPosts, times(1)).searchPostById(post.getPostId());
+        verify(repo).save(createdPost);
     }
 }
