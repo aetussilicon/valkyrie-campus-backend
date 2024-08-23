@@ -1,5 +1,6 @@
 package br.com.valkyrie.campus.services;
 
+import br.com.valkyrie.campus.exceptions.PostNotFoundException;
 import br.com.valkyrie.campus.exceptions.UserNotFoundException;
 import br.com.valkyrie.campus.model.dtos.NewPostDto;
 import br.com.valkyrie.campus.model.dtos.responses.PostsResponseDto;
@@ -142,5 +143,29 @@ class PostsServiceTest {
         assertEquals(1, createdPost.getDownvote());
 
         verify(repo).save(createdPost);
+    }
+
+    @Test
+    void listPost_Success() {
+        when(findingPosts.searchPostById(any(UUID.class))).thenReturn(createdPost);
+        when(mapper.postModelToDto(createdPost)).thenReturn(responseDto);
+
+        PostsResponseDto returnedDto = service.listPost(UUID.randomUUID());
+
+        assertEquals(createdPost.getTitle(), returnedDto.getTitle());
+        assertEquals(createdPost.getContent(), returnedDto.getContent());
+        assertEquals(createdPost.getPostedBy().getFullName(), returnedDto.getPostedBy());
+
+        verify(findingPosts).searchPostById(any(UUID.class));
+        verify(mapper).postModelToDto(createdPost);
+    }
+
+    @Test
+    void listPost_PostNotFoundException() {
+        when(findingPosts.searchPostById(any(UUID.class))).thenThrow(PostNotFoundException.class);
+        assertThrows(PostNotFoundException.class, () -> service.listPost(UUID.randomUUID()));
+
+        verify(findingPosts, times(1)).searchPostById(any(UUID.class));
+        verify(mapper, never()).postModelToDto(any(Posts.class));
     }
 }
