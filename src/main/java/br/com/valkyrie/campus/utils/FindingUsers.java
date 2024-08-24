@@ -1,5 +1,6 @@
 package br.com.valkyrie.campus.utils;
 
+import br.com.valkyrie.campus.exceptions.UserAlreadyExistsException;
 import br.com.valkyrie.campus.exceptions.UserNotFoundException;
 import br.com.valkyrie.campus.model.entities.Users;
 import br.com.valkyrie.campus.repositories.UsersRepository;
@@ -23,6 +24,10 @@ public class FindingUsers {
 
     public Users findUserbyUsertag(String usertag) {
         return repo.findUserByUsertag(usertag).orElseThrow(UserNotFoundException::new);
+    }
+
+    public Users searchUserByEmail(String email) {
+        return repo.findUserByEmail(email).orElseThrow(UserAlreadyExistsException::new);
     }
 
 }

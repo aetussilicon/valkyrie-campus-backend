@@ -31,11 +31,7 @@ public class UsersService {
      * @throws UserAlreadyExistsException - Caso o usuário já esteja cadastrado.
      * */
     public UsersResponseDto createUser (UsersSignupDto dto) {
-        Optional<Users> checkUserInDatabase = repo.findUserByEmail(dto.getEmail());
-        if (checkUserInDatabase.isPresent()) {
-            throw new UserAlreadyExistsException();
-
-        }
+        findingUsers.searchUserByEmail(dto.getEmail());
 
         dto.setRole(UsersRole.USER);
         Date actualDate = new Date();
